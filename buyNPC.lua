@@ -13,7 +13,7 @@ res_items = require('resources').items
 
 _addon.name = 'BuyNPC'
 _addon.author = 'onedough83'
-_addon.version = '1.0.2'
+_addon.version = '1.0.3'
 _addon.command = 'buynpc'
 _addon.commands = {'buy'}
 
@@ -241,7 +241,7 @@ end
 
 
 windower.register_event('incoming chunk',function(id,data,modified,injected,blocked)
-    if id == 0x034 or id == 0x032 then
+    if id == 0x034 then -- fire on npc release (when you are able to move)
         if busy == true and requested_item then
             menu_selection(npc_target, requested_item)
             submission_request()
