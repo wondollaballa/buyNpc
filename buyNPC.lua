@@ -13,11 +13,9 @@ res_items = require('resources').items
 
 _addon.name = 'BuyNPC'
 _addon.author = 'onedough83'
-_addon.version = '1.0.0'
+_addon.version = '1.0.1'
 _addon.command = 'buynpc'
 _addon.commands = {'buy'}
-
-local zone = windower.ffxi.get_info()['zone']
 
 local inventory_file_path = windower.addon_path..'known_items.lua'
 local known_items = T{}
@@ -78,7 +76,7 @@ function make_npc_packet(npc_name)
 		if valid_npc then
 			result['target'] = target_id
 			result['target_index'] = target_index
-			result['Zone'] = zone 
+			result['Zone'] =  windower.ffxi.get_info()['zone'] 
 		else
 			windower.add_to_chat(10,"Not close enough to "..npc_name)
 			result = nil
@@ -114,7 +112,7 @@ function menu_selection(npc, item)
     packet_05b['_unknown1'] = item['_unknown1']
     packet_05b['_unknown2'] = item['_unknown2']
     packet_05b['Menu ID'] = item['Menu ID']
-    packet_05b['Zone'] = zone
+    packet_05b['Zone'] =  windower.ffxi.get_info()['zone']
     packet_05b['Automated Message'] = item['Automated Message']
     -- -- Inject the 0x05B packet
     packets.inject(packet_05b)
@@ -126,7 +124,7 @@ function menu_selection(npc, item)
     packet_05b['unknown1'] = 16384
     packet_05b['unknown2'] = 0
     packet_05b['Automated Message'] = false
-    packet_05b['Zone'] = zone
+    packet_05b['Zone'] =  windower.ffxi.get_info()['zone']
     packet_05b['Menu ID'] = item['Menu ID']
     packets.inject(packet_05b)
 
@@ -195,7 +193,6 @@ end
 
 windower.register_event('addon command', function(...)
     local args = {...}
-
     if #args < 1 then
         windower.add_to_chat(10, 'Usage: //buy npc_name item_name quantity')
         return
