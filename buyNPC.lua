@@ -254,7 +254,7 @@ end)
 
 -- Resume the coroutine after a delay
 windower.register_event('time change', function(new, old)
-    if new % 0.5 == 0 and continue then  -- Every 1/2 second
+    if new % 1 == 0 and continue then  -- Every second
         if co ~= nil and coroutine.status(co) ~= 'dead' then
             local success, message = coroutine.resume(co)
             if not success then
