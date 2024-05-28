@@ -25,6 +25,7 @@ local requested_item = T{}
 local npc_target = nil
 local busy = false;
 local continue = false;
+local item_obtained = false
 
 do
     if windower.file_exists(inventory_file_path) then
@@ -90,6 +91,7 @@ end
 
 function select_npc(npc)
     if npc.target and npc.target_index then
+        busy = true
         local packet = packets.new('outgoing', 0x01A, {
             ['Target'] = npc.target,
             ['Target Index'] = npc.target_index,
@@ -111,7 +113,7 @@ function menu_selection(npc, item)
     packet_05b['_unknown1'] = item['_unknown1']
     packet_05b['_unknown2'] = item['_unknown2']
     packet_05b['Menu ID'] = item['Menu ID']
-    packet_05b['Zone'] = item['Zone']
+    packet_05b['Zone'] = zone
     packet_05b['Automated Message'] = item['Automated Message']
     -- -- Inject the 0x05B packet
     packets.inject(packet_05b)
@@ -140,6 +142,7 @@ function submission_request()
     })
     -- Inject the 0x03A packet
     packets.inject(packet_03a)
+    busy = false
 end
 
 function buy_npc(target, item)
@@ -151,7 +154,6 @@ function buy_npc(target, item)
 
     if item then
         select_npc(target)
-        busy = true
     else
         print('Item not found')
     end
@@ -188,7 +190,7 @@ function buy_item_multiple_times(target, item, count)
 
     -- Resume the coroutine after a delay
     windower.register_event('time change', function(new, old)
-        if new % 0.1 == 0 and continue then  -- Every 1 second
+        if new % 0.5 == 0 and continue then  -- Every 1/2 second
             local success, message = coroutine.resume(co)
             if not success then
                 print('Error resuming coroutine:', message)
@@ -257,8 +259,6 @@ windower.register_event('incoming chunk',function(id,data,modified,injected,bloc
         if busy == true and requested_item then
             menu_selection(npc_target, requested_item)
             submission_request()
-
-            busy = false
 
             return true
         end

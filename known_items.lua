@@ -6,7 +6,6 @@ return {
         ['_unknown2'] = 0,
         ['Automated Message'] = false,
         ['Menu ID'] = 968,
-        ['Zone'] = 50
     },
     ['pinch of voiddust'] = T{
         ['Option Index'] = 1,
@@ -14,7 +13,6 @@ return {
         ['_unknown2'] = 0,
         ['Automated Message'] = false,
         ['Menu ID'] = 968,
-        ['Zone'] = 50
     },
     -- BASTOK Conquest points
     -- Rank 3 items
@@ -24,7 +22,6 @@ return {
         ['_unknown2'] = 0,
         ['Automated Message'] = false,
         ['Menu ID'] = 32761,
-        ['Zone'] = 234
     },
     -- Rank 4 items
     ["iron musketeer's gauntlets"] = T{
@@ -33,6 +30,5 @@ return {
         ['_unknown2'] = 0,
         ['Automated Message'] = false,
         ['Menu ID'] = 32761,
-        ['Zone'] = 234
     },
 }
