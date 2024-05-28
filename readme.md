@@ -21,6 +21,12 @@ If you wish to purchase until your inventory is full you can use the following c
 
 ``` //buy "crying wind, i.m." "musketeer gun" full```
 
+To pause the purchasing for at anytime you can enter the following command:
+``` //buy pause ```
+
+To resume purchases you can enter in the following command:
+``` //buy resume ```
+
 To stop the current operation at any time, run:
 
 ``` //buy stop ```

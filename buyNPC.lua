@@ -24,6 +24,7 @@ local known_items = T{}
 local requested_item = T{}
 local npc_target = nil
 local busy = false;
+local continue = false;
 
 do
     if windower.file_exists(inventory_file_path) then
@@ -172,9 +173,12 @@ function count_inv()
 end
 
 function buy_item_multiple_times(target, item, count)
-    local continue = true
+    continue = true
     local co = coroutine.create(function()
         for i = 1, count do
+            if(not continue) then
+                break
+            end
             buy_npc(target, item)
             windower.add_to_chat(10, 'Buying item ' .. i .. ' of ' .. count)
             coroutine.yield()
@@ -203,11 +207,15 @@ windower.register_event('addon command', function(...)
 
     local cmd = args[1]:lower()
 
-    if cmd == 'stop' then
+    if cmd == 'pause' then
         -- Stop the current operation
         stop_buying()
         return
-    elseif cmd == 'r' then
+    elseif cmd == 'resume' then
+        -- Resume the current operation
+        resume_buying()
+        return
+    elseif cmd == 'r' or cmd == 'stop' then
         -- Reload the script
         windower.send_command('lua r buynpc')
         return
@@ -234,6 +242,13 @@ end)
 function stop_buying()
     -- Set a flag to stop the buying process
     continue = false
+    windower.add_to_chat(10, 'Buying process paused')
+end
+
+function resume_buying()
+    -- Set a flag to stop the buying process
+    continue = true
+    windower.add_to_chat(10, 'Buying process resumed')
 end
 
 
