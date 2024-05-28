@@ -28,7 +28,6 @@ local busy = false;
 do
     if windower.file_exists(inventory_file_path) then
         known_items = dofile(inventory_file_path)
-        print('found file', inventory_file_path, known_items.voiddust['Option Index'])
     end
 end
 
@@ -36,7 +35,7 @@ function get_item_res(item)
     -- Same as in SellNPC.lua
 
     if(not known_items[item]) then
-        print('This item is not in your known items table, please update your inventory file and redo purchase.')
+        windower.add_to_chat('10','This item is not in your known items table, please update your inventory file and redo purchase.')
         return nil
     end
 
@@ -58,11 +57,9 @@ function make_npc_packet(npc_name)
 	local result = {}
     local target_index = nil
     local target_id = nil
-    local distance = nil
     local valid_npc = nil
 
     for index, npc in pairs(windower.ffxi.get_mob_array()) do
-        -- print('finding name', npc.name, npc.name:ieq(npc_name) ,index)
         if npc and npc.name:ieq(npc_name) then
             found = 1
             valid_npc = valid_target(npc)
@@ -92,7 +89,6 @@ end
 
 function select_npc(npc)
     if npc.target and npc.target_index then
-        -- print('valid npc', npc.target, npc.target_index)
         local packet = packets.new('outgoing', 0x01A, {
             ['Target'] = npc.target,
             ['Target Index'] = npc.target_index,
@@ -155,8 +151,6 @@ function buy_npc(target, item)
     if item then
         select_npc(target)
         busy = true
-        print('item ', item['Option Index'], item['Menu ID'], item['Zone'], item['_unknown1'], item['_unknown2'])
-
     else
         print('Item not found')
     end
@@ -203,7 +197,7 @@ windower.register_event('addon command', function(...)
     local args = {...}
 
     if #args < 1 then
-        print('Usage: //buy npc_name item_name quantity')
+        windower.add_to_chat(10, 'Usage: //buy npc_name item_name quantity')
         return
     end
 
@@ -220,7 +214,7 @@ windower.register_event('addon command', function(...)
     end
 
     if #args < 3 then
-        print('Usage: buy npc_name item_name quantity')
+        windower.add_to_chat(10, 'Usage: //buy npc_name item_name quantity')
         return
     end
 
