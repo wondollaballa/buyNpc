@@ -13,7 +13,7 @@ res_items = require('resources').items
 
 _addon.name = 'BuyNPC'
 _addon.author = 'onedough83'
-_addon.version = '1.0.1'
+_addon.version = '1.0.2'
 _addon.command = 'buynpc'
 _addon.commands = {'buy'}
 
@@ -49,9 +49,6 @@ function valid_target(npc)
         return true
     end
     return false
-end
-
-function make_item_selection_packet()
 end
 
 function make_npc_packet(npc_name)
@@ -187,8 +184,6 @@ function buy_item_multiple_times(target, item, count)
         continue = false
        
     end)
-
-
 end
 
 windower.register_event('addon command', function(...)
