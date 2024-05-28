@@ -240,7 +240,6 @@ end
 windower.register_event('incoming chunk',function(id,data,modified,injected,blocked)
     if id == 0x034 or id == 0x032 then
         if busy == true and requested_item then
-            print('menu selection starting')
             menu_selection(npc_target, requested_item)
             submission_request()
 
