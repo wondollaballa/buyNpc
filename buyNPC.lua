@@ -25,7 +25,8 @@ local requested_item = T{}
 local npc_target = nil
 local busy = false;
 local continue = false;
-local item_obtained = false
+local co = nil
+
 
 do
     if windower.file_exists(inventory_file_path) then
@@ -176,7 +177,7 @@ end
 
 function buy_item_multiple_times(target, item, count)
     continue = true
-    local co = coroutine.create(function()
+    co = coroutine.create(function()
         for i = 1, count do
             if(not continue) then
                 break
@@ -186,17 +187,10 @@ function buy_item_multiple_times(target, item, count)
             coroutine.yield()
         end
         continue = false
+       
     end)
 
-    -- Resume the coroutine after a delay
-    windower.register_event('time change', function(new, old)
-        if new % 0.5 == 0 and continue then  -- Every 1/2 second
-            local success, message = coroutine.resume(co)
-            if not success then
-                print('Error resuming coroutine:', message)
-            end
-        end
-    end)
+
 end
 
 windower.register_event('addon command', function(...)
@@ -264,4 +258,19 @@ windower.register_event('incoming chunk',function(id,data,modified,injected,bloc
         end
     end
 	
+end)
+
+-- Resume the coroutine after a delay
+windower.register_event('time change', function(new, old)
+    if new % 0.5 == 0 and continue then  -- Every 1/2 second
+        if co ~= nil and coroutine.status(co) ~= 'dead' then
+            local success, message = coroutine.resume(co)
+            if not success then
+                print('Error resuming coroutine:', message)
+            end
+        else
+            print('Coroutine has finished execution and cannot be resumed.')
+            co = nil
+        end
+    end
 end)
