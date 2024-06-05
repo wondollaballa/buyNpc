@@ -31,4 +31,13 @@ return {
         ['Automated Message'] = false,
         ['Menu ID'] = 32761,
     },
+    -- SAN D'ORIA Conquest points
+    -- Rank 3 items
+    ["royal squire's halbred"] = T{
+        ['Option Index'] = 32800,
+        ['_unknown1'] = 0,
+        ['_unknown2'] = 0,
+        ['Automated Message'] = false,
+        ['Menu ID'] = 32762,
+    },
 }
