@@ -40,4 +40,13 @@ return {
         ['Automated Message'] = false,
         ['Menu ID'] = 32762,
     },
+    -- WINDURST Conquest points
+    -- Rank 3 items
+    ["mercenary captain's scythe"] = T{
+        ['Option Index'] = 32800,
+        ['_unknown1'] = 0,
+        ['_unknown2'] = 0,
+        ['Automated Message'] = false,
+        ['Menu ID'] = 32759,
+    },
 }
