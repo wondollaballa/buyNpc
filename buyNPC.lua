@@ -13,7 +13,7 @@ res_items = require('resources').items
 
 _addon.name = 'BuyNPC'
 _addon.author = 'onedough83'
-_addon.version = '1.0.5'
+_addon.version = '1.0.6'
 _addon.command = 'buynpc'
 _addon.commands = {'buy'}
 
@@ -45,7 +45,7 @@ function get_item_res(item)
 end
 
 function valid_target(npc)
-    if math.sqrt(npc.distance) < 6 and npc.valid_target and npc.is_npc and bit.band(npc.spawn_type, 0xDF) == 2 then
+    if math.sqrt(npc.distance) < 10 and npc.valid_target and npc.is_npc and bit.band(npc.spawn_type, 0xDF) == 2 then
         return true
     end
     return false
@@ -172,6 +172,7 @@ end
 
 function buy_item_multiple_times(npc_name, item, count )
     local target = make_npc_packet(npc_name)
+    npc_target = target
     continue = true
     co = coroutine.create(function()
         for i = 1, count do
@@ -179,6 +180,7 @@ function buy_item_multiple_times(npc_name, item, count )
             for index, npc in pairs(windower.ffxi.get_mob_array()) do
                 if npc and npc.name:ieq(npc_name) then
                     if not valid_target(npc) then
+                        windower.add_to_chat(7, 'You have moved too far from npc, purchases have stopped...')
                         continue = false
                         break
                     end
@@ -235,9 +237,8 @@ windower.register_event('addon command', function(...)
     local item = get_item_res(item_name)
     local qty = determine_quantity(args[3])
     requested_item = item
-    npc_target = target
 
-    buy_item_multiple_times(target, item, qty, args[1])
+    buy_item_multiple_times(target_name, item, qty)
 end)
 
 -- Function to stop the current operation
