@@ -14,6 +14,14 @@ return {
         ['Automated Message'] = false,
         ['Menu ID'] = 968,
     },
+    -- BASTOK Sparks of Eminence items
+    ['acheron shield'] = T{
+        ['Option Index'] = 9,
+        ['_unknown1'] = 41,
+        ['_unknown2'] = 0,
+        ['Automated Message'] = true,
+        ['Menu ID'] = 26,
+    },
     -- BASTOK Conquest points
     -- Rank 3 items
     ["centurion's axe"] = T{
@@ -33,7 +41,7 @@ return {
     },
     -- SAN D'ORIA Conquest points
     -- Rank 3 items
-    ["royal squire's halbred"] = T{
+    ["royal squire's halberd"] = T{
         ['Option Index'] = 32800,
         ['_unknown1'] = 0,
         ['_unknown2'] = 0,

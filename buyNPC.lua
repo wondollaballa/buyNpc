@@ -147,7 +147,6 @@ function buy_npc(target, item)
         return
     end
 
-
     if item then
         select_npc(target)
     else
@@ -177,6 +176,11 @@ function buy_item_multiple_times(target, item, count)
             if(not continue) then
                 break
             end
+            -- Make sure you havent moved too far from npc before each purchase
+            if not valid_target(target) then
+                continue = false
+                break
+            end
             buy_npc(target, item)
             windower.add_to_chat(10, 'Buying item ' .. i .. ' of ' .. count)
             coroutine.yield()
@@ -197,13 +201,16 @@ windower.register_event('addon command', function(...)
 
     if cmd == 'pause' then
         -- Stop the current operation
-        stop_buying()
+        pause_buying()
         return
     elseif cmd == 'resume' then
         -- Resume the current operation
         resume_buying()
         return
-    elseif cmd == 'r' or cmd == 'stop' then
+    elseif cmd == 'stop' then
+        stop_buying()
+        return
+    elseif cmd == 'r' then
         -- Reload the script
         windower.send_command('lua r buynpc')
         return
@@ -228,6 +235,17 @@ end)
 
 -- Function to stop the current operation
 function stop_buying()
+    -- Stop the current operation
+    continue = false
+    -- Clean up any resources or states here
+    -- For example, if you're using a coroutine:
+    if co ~= nil then
+        co = nil
+    end
+    windower.add_to_chat(10, 'Stopped buying. Please enter a new buy command to start buying again.')
+end
+
+function pause_buying()
     -- Set a flag to stop the buying process
     continue = false
     windower.add_to_chat(10, 'Buying process paused')
