@@ -13,7 +13,7 @@ res_items = require('resources').items
 
 _addon.name = 'BuyNPC'
 _addon.author = 'onedough83'
-_addon.version = '1.0.3'
+_addon.version = '1.0.4'
 _addon.command = 'buynpc'
 _addon.commands = {'buy'}
 
