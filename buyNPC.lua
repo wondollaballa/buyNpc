@@ -21,6 +21,7 @@ local inventory_file_path = windower.addon_path..'known_items.lua'
 local known_items = T{}
 local requested_item = T{}
 local npc_target = nil
+local npc_obj = nil
 local busy = false;
 local continue = false;
 local co = nil
@@ -59,7 +60,9 @@ function make_npc_packet(npc_name)
 
     for index, npc in pairs(windower.ffxi.get_mob_array()) do
         if npc and npc.name:ieq(npc_name) then
+            
             found = 1
+            npc_obj = npc
             valid_npc = valid_target(npc)
 			target_index = index
 			target_id = npc.id
@@ -177,7 +180,7 @@ function buy_item_multiple_times(target, item, count)
                 break
             end
             -- Make sure you havent moved too far from npc before each purchase
-            if not valid_target(target) then
+            if not valid_target(npc_obj) then
                 continue = false
                 break
             end
