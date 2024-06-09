@@ -250,19 +250,19 @@ function stop_buying()
     if co ~= nil then
         co = nil
     end
-    windower.add_to_chat(10, 'Stopped buying. Please enter a new buy command to start buying again.')
+    windower.add_to_chat(7, 'Stopped buying. Please enter a new buy command to start buying again.')
 end
 
 function pause_buying()
     -- Set a flag to stop the buying process
     continue = false
-    windower.add_to_chat(10, 'Buying process paused')
+    windower.add_to_chat(7, 'Buying process paused')
 end
 
 function resume_buying()
     -- Set a flag to stop the buying process
     continue = true
-    windower.add_to_chat(10, 'Buying process resumed')
+    windower.add_to_chat(7, 'Buying process resumed')
 end
 
 
