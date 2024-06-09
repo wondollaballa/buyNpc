@@ -13,7 +13,7 @@ res_items = require('resources').items
 
 _addon.name = 'BuyNPC'
 _addon.author = 'onedough83'
-_addon.version = '1.0.4'
+_addon.version = '1.0.5'
 _addon.command = 'buynpc'
 _addon.commands = {'buy'}
 
@@ -21,7 +21,6 @@ local inventory_file_path = windower.addon_path..'known_items.lua'
 local known_items = T{}
 local requested_item = T{}
 local npc_target = nil
-local npc_obj = nil
 local busy = false;
 local continue = false;
 local co = nil
@@ -62,7 +61,6 @@ function make_npc_packet(npc_name)
         if npc and npc.name:ieq(npc_name) then
             
             found = 1
-            npc_obj = npc
             valid_npc = valid_target(npc)
 			target_index = index
 			target_id = npc.id
@@ -172,18 +170,24 @@ function count_inv()
 	return freeslots
 end
 
-function buy_item_multiple_times(target, item, count)
+function buy_item_multiple_times(npc_name, item, count )
+    local target = make_npc_packet(npc_name)
     continue = true
     co = coroutine.create(function()
         for i = 1, count do
+            -- Make sure you havent moved too far from npc before each purchase
+            for index, npc in pairs(windower.ffxi.get_mob_array()) do
+                if npc and npc.name:ieq(npc_name) then
+                    if not valid_target(npc) then
+                        continue = false
+                        break
+                    end
+                end
+            end
             if(not continue) then
                 break
             end
-            -- Make sure you havent moved too far from npc before each purchase
-            if not valid_target(npc_obj) then
-                continue = false
-                break
-            end
+
             buy_npc(target, item)
             windower.add_to_chat(10, 'Buying item ' .. i .. ' of ' .. count)
             coroutine.yield()
@@ -226,14 +230,14 @@ windower.register_event('addon command', function(...)
 
     if windower.ffxi.get_mob_by_target('me').status ~= 0 then return end
     
-    local target = make_npc_packet(args[1])
+    local target_name = args[1]
     local item_name = args[2]
     local item = get_item_res(item_name)
     local qty = determine_quantity(args[3])
     requested_item = item
     npc_target = target
 
-    buy_item_multiple_times(target, item, qty)
+    buy_item_multiple_times(target, item, qty, args[1])
 end)
 
 -- Function to stop the current operation
