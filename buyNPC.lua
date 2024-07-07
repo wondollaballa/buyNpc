@@ -34,13 +34,19 @@ end
 
 function get_item_res(item)
     -- Same as in SellNPC.lua
+    local item_lower = item:lower();
+    
+    -- convert all known_items to lower case before comparison
+    for k,v in pairs(known_items) do
+        known_items[k:lower()] = v
+    end
 
-    if(not known_items[item]) then
+    if(not known_items[item_lower]) then
         windower.add_to_chat('10','This item is not in your known items table, please update your inventory file and redo purchase.')
         return nil
     end
 
-    return known_items[item]
+    return known_items[item_lower]
 
 end
 
