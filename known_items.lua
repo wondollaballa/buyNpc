@@ -31,6 +31,13 @@ return {
         ['Automated Message'] = false,
         ['Menu ID'] = 32761,
     },
+    ["musketeer gun"] = T{
+        ['Option Index'] = 32837,
+        ['_unknown1'] = 0,
+        ['_unknown2'] = 0,
+        ['Automated Message'] = false,
+        ['Menu ID'] = 32761,
+    },
     -- Rank 4 items
     ["iron musketeer's gauntlets"] = T{
         ['Option Index'] = 32818,
